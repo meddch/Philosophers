@@ -18,6 +18,11 @@ int main()
 	{
 		if(pthread_create(t + i, NULL, &func, NULL) != 0)
 			return(perror("Failed to create thread !!"),1);
+		i++;
+	}
+	i = 0;
+	while(i < 5)
+	{
 		if(pthread_join(t[i], NULL) != 0)
 			return(2);
 		printf("thread number : %d finished \n",i);
