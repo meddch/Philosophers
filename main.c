@@ -6,11 +6,11 @@
 /*   By: mechane <mechane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 14:41:38 by mechane           #+#    #+#             */
-/*   Updated: 2023/02/27 14:41:39 by mechane          ###   ########.fr       */
+/*   Updated: 2023/02/27 14:45:14 by mechane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "philosopher.h"
 
 pthread_t philosopher[4];
 pthread_mutex_t forks[4];
