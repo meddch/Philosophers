@@ -29,7 +29,7 @@ void  *func(void *val)
 		pthread_mutex_trylock(&forks[n + 1]);
 		printf("Philosoper  %d has taken a fork \n",n);
 		printf("Philosopher %d is eating\n",n);
-		usleep(100);
+		usleep(1000);
 		pthread_mutex_unlock(&forks[n]);
 		pthread_mutex_unlock(&forks[n + 1]);
 		printf("Philosopher %d is going to sleep\n",n);
