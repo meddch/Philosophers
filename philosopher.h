@@ -20,15 +20,38 @@
 #include<sys/time.h>
 
 
+# define UNLOCK 1
+# define LOCK 0
+
+struct s_data;;
+
+
 typedef struct s_philo
 {
-    int id;
-    int X_to_die;
-    int X_to_eat;
-    int X_to_sleep;
-}   t_philo;
+	int				ate_times;
+	int				pos;
+	int				right_fork;
+	int				left_fork;
+	unsigned long	last_ate;
+	struct s_data	*data;
+	pthread_t		thread_id;
+}				t_philo;
 
 
+typedef struct s_data
+{
+	int				count;
+	int				X_to_die;
+	int				X_to_eat;
+	int				X_to_sleep;
+	int				eat_count_max;
+	int				stop_condition;
+	int				max_ate;
+	t_philo			*philos;
+	unsigned long	start_time;
+	pthread_mutex_t	print;
+	pthread_mutex_t	*forks;
+}				t_data;
 
 
 #endif
