@@ -181,7 +181,7 @@ int main()
 	data.philos_alive = 0;
 	data.X_to_eat = 100;
 	data.X_to_sleep = 100;
-	data.X_to_die = 300000;
+	data.X_to_die = 30000;
 
 	if (!ft_create(&data))
 		return(0);
