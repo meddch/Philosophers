@@ -55,5 +55,6 @@ typedef struct s_data
 
 
 char	*ft_itoa(int n);
+unsigned long	get_time(void);
 
 #endif

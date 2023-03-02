@@ -24,6 +24,7 @@ static int	ft_init(t_data *data)
 		data->philos[i].left_fork = (i + 1) % data->num_of_philos;
 		data->philos[i].pos = i + 1;
 		data->philos[i].ate_times = 0;
+		data->philos[i].last_ate = get_time();
 		i++;
 	}
 	if (i != data->num_of_philos)
@@ -163,11 +164,14 @@ void is_philo_dead(t_data *data)
 	i = 0;
 	while(i < data->num_of_philos && !data->philos_alive)
 	{
-			// printf("nnn");
-			if (get_time() - data->philos[i].last_ate >= data->X_to_die)
+			unsigned long t = get_time();
+			unsigned long x = data->X_to_die;
+			unsigned long y = data->philos[i].last_ate;
+			if (t > y && (t - y)  >= x)
 			{
+				// printf("        %ld\n", y);
 				pthread_mutex_lock(&data->print);
-				printf("%d died \n",data->philos[i].pos);
+				printf("%d died \n", i + 1);
 				data->philos_alive = 1;
 			}
 	}
@@ -177,11 +181,11 @@ int main()
 {
 	t_data data;
 
-	data.num_of_philos = 6;
+	data.num_of_philos = 5;
 	data.philos_alive = 0;
 	data.X_to_eat = 100;
 	data.X_to_sleep = 100;
-	data.X_to_die = 300;
+	data.X_to_die = 400;
 
 	if (!ft_create(&data))
 		return(0);
