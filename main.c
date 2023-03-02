@@ -181,11 +181,11 @@ int main()
 {
 	t_data data;
 
-	data.num_of_philos = 5;
+	data.num_of_philos = 20;
 	data.philos_alive = 0;
 	data.X_to_eat = 100;
 	data.X_to_sleep = 100;
-	data.X_to_die = 400;
+	data.X_to_die = 4000;
 
 	if (!ft_create(&data))
 		return(0);
