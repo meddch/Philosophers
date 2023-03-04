@@ -169,7 +169,7 @@ void is_philo_dead(t_data *data)
 			unsigned long y = data->philos[i].last_ate;
 			if (t > y && (t - y)  >= x)
 			{
-				// printf("        %ld\n", y);
+				printf("        %ld\n", t - y);
 				pthread_mutex_lock(&data->print);
 				printf("%d died \n", i + 1);
 				data->philos_alive = 1;
@@ -181,11 +181,11 @@ int main()
 {
 	t_data data;
 
-	data.num_of_philos = 20;
+	data.num_of_philos = 5;
 	data.philos_alive = 0;
 	data.X_to_eat = 100;
 	data.X_to_sleep = 100;
-	data.X_to_die = 4000;
+	data.X_to_die = 6000;
 
 	if (!ft_create(&data))
 		return(0);

@@ -20,9 +20,6 @@
 #include<sys/time.h>
 
 
-# define UNLOCK 1
-# define LOCK 0
-
 struct s_data;;
 
 
