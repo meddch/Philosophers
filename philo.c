@@ -1,8 +1,19 @@
-x	
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mechane <mechane@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/27 14:41:38 by mechane           #+#    #+#             */
+/*   Updated: 2023/02/27 14:45:14 by mechane          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "philo.h"
 
-long long int	current_time(void)
+#include "philosopher.h"
+
+unsigned long int	current_time(void)
 {
 	struct timeval	time;
 	long long int	ms;
@@ -11,6 +22,41 @@ long long int	current_time(void)
 	ms = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (ms);
 }
+
+void	ft_error(char *msg)
+{
+	printf("%s", msg);
+	return ;
+}
+
+void	free_all(t_ph **ph)
+{
+	int		i;
+	t_data	*data;
+
+	i = -1;
+	data = ph[0]->data;
+	while (++i < data->fork_size)
+		free(ph[i]);
+	free(data->forks);
+	free(data);
+	free(ph);
+}
+
+void	print_status(t_ph *ph, const char *msg)
+{
+	t_data	*data;
+
+	data = ph->data;
+	pthread_mutex_lock(&data->mtx_print);
+	if (!(data->is_dead))
+	{
+		printf("%lld ", current_time() - data->ms_start);
+		printf("%d %s", ph->i + 1, msg);
+	}	
+	pthread_mutex_unlock(&data->mtx_print);
+}
+
 
 void	ft_usleep(t_ph *ph, long long time_eat)
 {
@@ -51,13 +97,13 @@ void	check_death(t_ph **ph)
 		i = -1;
 		while (++i < data->fork_size)
 		{
-			pthread_mutex_lock(&data->mtx_eat);
+			pthread_mutex_lock(&data->mtx_meal);
 			if (current_time() - ph[i]->last_eat_t > data->time_die)
 			{
 				print_status(ph[i], "died\n");
 				data->is_dead = 1;
 			}
-			pthread_mutex_unlock(&data->mtx_eat);
+			pthread_mutex_unlock(&data->mtx_meal);
 			usleep(100);
 		}
 		if (data->is_dead)
@@ -80,10 +126,10 @@ void	eating(t_ph *ph)
 	}	
 	pthread_mutex_lock(&data->forks[(ph->i + 1) % data->fork_size]);
 	print_status(ph, "has taken a fork\n");
-	pthread_mutex_lock(&data->mtx_eat);
+	pthread_mutex_lock(&data->mtx_meal);
 	print_status(ph, "is eating\n");
 	ph->last_eat_t = current_time();
-	pthread_mutex_unlock(&data->mtx_eat);
+	pthread_mutex_unlock(&data->mtx_meal);
 	ft_usleep(ph, data->time_eat);
 	ph->nbr_eat += 1;
 	pthread_mutex_unlock(&data->forks[ph->i]);
@@ -145,38 +191,29 @@ pthread_mutex_t	*fork_init(long long size, t_data *data)
 	if (!forks)
 	{
 		free(data);
-		error("Malloc error\n");
+		ft_error("Allocation failed\n");
 	}	
 	i = -1;
 	while (++i < size)
 		pthread_mutex_init(&forks[i], NULL);
-	pthread_mutex_init(&data->mtx_write, NULL);
-	pthread_mutex_init(&data->mtx_eat, NULL);
+	pthread_mutex_init(&data->mtx_print, NULL);
+	pthread_mutex_init(&data->mtx_meal, NULL);
 	return (forks);
 }
 
-t_data	*data_init(int ac, char **av)
+t_data	*data_init()
 {
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
-		error("Malloc error\n");
-	data->fork_size = ft_atoll(av[1]);
-	data->time_die = ft_atoll(av[2]);
-	data->time_eat = ft_atoll(av[3]);
-	data->time_sleep = ft_atoll(av[4]);
-	if (ac == 5)
-		data->max_eat = -1;
-	else
-		data->max_eat = ft_atoll(av[5]);
-	if (data->time_die < 1 || data->time_eat < 1 || data->time_sleep < 1
-		|| data->fork_size < 1 || (ac == 6 && data->max_eat < 1))
-	{
-		free(data);
-		error("Error: arguments\n");
-	}
-	data->forks = fork_init(ft_atoll(av[1]), data);
+		ft_error("Allocation failed\n");
+	data->fork_size = 10;
+	data->time_die = 300;
+	data->time_eat = 100;
+	data->time_sleep = 100;
+	data->max_eat = -1;
+	data->forks = fork_init(data->fork_size, data);
 	data->ms_start = current_time();
 	data->is_dead = 0;
 	data->is_all_eaten = 0;
@@ -193,7 +230,7 @@ t_ph	**philo_init(t_data *data)
 	{
 		free(data->forks);
 		free(data);
-		error("Malloc error\n");
+		ft_error("Allocation failed\n");
 	}
 	i = 0;
 	while (i < data->fork_size)
@@ -207,48 +244,14 @@ t_ph	**philo_init(t_data *data)
 	return (ph);
 }
 
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
 
-long long	ft_atoll(char *str)
-{
-	int			i;
-	long long	sign;
-	long long	number;
 
-	sign = 1;
-	number = 0;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (ft_isdigit(str[i]))
-	{
-		number = (number * 10) + (str[i] - 48) * sign;
-		i++;
-	}
-	return (number);
-}
-
-void	print_status(t_ph *ph, const char *msg)
+int	main(int ac, char **av)
 {
 	t_data	*data;
+	t_ph	**ph;
 
-	data = ph->data;
-	pthread_mutex_lock(&data->mtx_write);
-	if (!(data->is_dead))
-	{
-		printf("%lld ", current_time() - data->ms_start);
-		printf("%d %s", ph->i + 1, msg);
-	}	
-	pthread_mutex_unlock(&data->mtx_write);
+	data = data_init(ac, av);
+	ph = philo_init(data);
+	threading(ph);
 }

@@ -20,35 +20,31 @@
 #include<sys/time.h>
 
 
-struct s_data;;
-
-
-typedef struct s_philo
-{
-	int				ate_times;
-	int				pos;
-	int				right_fork;
-	int				left_fork;
-	unsigned long	last_ate;
-	struct s_data	*data;
-	pthread_t		thread_id;
-}				t_philo;
-
-
 typedef struct s_data
 {
-	int				num_of_philos;
-	int				X_to_die;
-	int				X_to_eat;
-	int				X_to_sleep;
-	int				eat_count_max;
-	int				philos_alive;
-	int				max_ate;
-	t_philo			*philos;
-	unsigned long	start_time;
-	pthread_mutex_t	print;
+	int				time_die;
+	long long int	ms_start;
+	int				time_eat;
+	int				time_sleep;
+	int				max_eat;
+	int				fork_size;
 	pthread_mutex_t	*forks;
-}				t_data;
+	pthread_mutex_t	mtx_print;
+	pthread_mutex_t	mtx_meal;
+	int				is_dead;
+	int				is_all_eaten;
+}	t_data;
+
+typedef struct s_ph
+{
+	pthread_t	th;
+	int			i;
+	t_data		*data;	
+	int			nbr_eat;	
+	long long	last_eat_t;
+
+}	t_ph;
+
 
 
 char	*ft_itoa(int n);
