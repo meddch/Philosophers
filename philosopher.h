@@ -18,21 +18,25 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include<sys/time.h>
+#define MALLOC_ERR "\033[0;31mAllocation Failed \n"
+#define ARGS_ERR "\033[0;31mInvalid Arguments \n"
+#define CREAT_THRD_ERR "\033[0;31mError Creating threads! \n"
+#define JOIN_THRD_ERR "\033[0;31mError Joining Threads! \n"
 
 
 typedef struct s_data
 {
-	int				time_die;
-	long long int	ms_start;
-	int				time_eat;
-	int				time_sleep;
-	int				max_eat;
-	int				fork_size;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	mtx_print;
-	pthread_mutex_t	mtx_meal;
-	int				is_dead;
-	int				is_all_eaten;
+	int					philo_count;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					max_eat;
+	int					is_dead;
+	int					is_all_eaten;
+	unsigned long int	ms_start;
+	pthread_mutex_t		*forks;
+	pthread_mutex_t		mtx_print;
+	pthread_mutex_t		mtx_meal;
 }	t_data;
 
 typedef struct s_ph
@@ -41,13 +45,9 @@ typedef struct s_ph
 	int			i;
 	t_data		*data;	
 	int			nbr_eat;	
-	long long	last_eat_t;
+	unsigned long	last_eat_t;
 
 }	t_ph;
 
-
-
-char	*ft_itoa(int n);
-unsigned long	get_time(void);
 
 #endif
