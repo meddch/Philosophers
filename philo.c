@@ -52,7 +52,7 @@ void	print(t_ph *ph, const char *msg)
 	if (!(data->is_dead))
 	{
 		printf("%lu ", ft_time() - data->ms_start);
-		printf("%d %s", ph->i + 1, msg);
+		printf("%d %s", ph->pos + 1, msg);
 	}	
 	pthread_mutex_unlock(&data->mtx_print);
 }
@@ -102,6 +102,7 @@ void	check_death(t_ph **ph)
 			{
 				print(ph[i], "died\n");
 				data->is_dead = 1;
+				// pthread_mutex_lock(&data->mtx_print);
 			}
 			pthread_mutex_unlock(&data->mtx_meal);
 			usleep(100);
@@ -118,33 +119,33 @@ void	ft_eat(t_ph *ph)
 	t_data	*data;
 
 	data = ph->data;
-	pthread_mutex_lock(&data->forks[ph->i]);
+	pthread_mutex_lock(&data->forks[ph->pos]);
 	print(ph, "has taken a fork\n");
 	if (data->philo_count == 1)
 	{
 		ft_sleep(ph, data->time_to_die + 50);
 		return ;
 	}	
-	pthread_mutex_lock(&data->forks[(ph->i + 1) % data->philo_count]);
+	pthread_mutex_lock(&data->forks[(ph->pos + 1) % data->philo_count]);
 	print(ph, "has taken a fork\n");
 	pthread_mutex_lock(&data->mtx_meal);
-	print(ph, "is ft_eat\n");
+	print(ph, "is eating\n");
 	ph->last_eat_t = ft_time();
 	pthread_mutex_unlock(&data->mtx_meal);
 	ft_sleep(ph, data->time_to_eat);
 	ph->nbr_eat += 1;
-	pthread_mutex_unlock(&data->forks[ph->i]);
-	pthread_mutex_unlock(&data->forks[(ph->i + 1) % data->philo_count]);
+	pthread_mutex_unlock(&data->forks[ph->pos]);
+	pthread_mutex_unlock(&data->forks[(ph->pos + 1) % data->philo_count]);
 }
 
-void	*ft_routine(void *param)
+void	*ft_routine(void *args)
 {
 	t_ph	*ph;
 	t_data	*data;
 
-	ph = (t_ph *)param;
+	ph = (t_ph *)args;
 	data = ph->data;
-	if (ph->i % 2)
+	if (ph->pos % 2)
 		usleep(15000);
 	while (!(data->is_dead))
 	{
@@ -210,7 +211,7 @@ t_data	*data_init()
 	if (!data)
 		ft_error(MALLOC_ERR);
 	data->philo_count = 10;
-	data->time_to_die = 300;
+	data->time_to_die = 100;
 	data->time_to_eat = 100;
 	data->time_to_sleep = 100;
 	data->max_eat = -1;
@@ -237,7 +238,7 @@ t_ph	**philo_init(t_data *data)
 	while (i < data->philo_count)
 	{
 		ph[i] = malloc(sizeof(t_ph));
-		ph[i]->i = i;
+		ph[i]->pos = i;
 		ph[i]->data = data;
 		ph[i]->nbr_eat = 0;
 		i++;

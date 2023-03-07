@@ -42,7 +42,7 @@ typedef struct s_data
 typedef struct s_ph
 {
 	pthread_t	th;
-	int			i;
+	int			pos;
 	t_data		*data;	
 	int			nbr_eat;	
 	unsigned long	last_eat_t;
