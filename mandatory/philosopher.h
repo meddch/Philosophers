@@ -22,15 +22,17 @@
 #define ARGS_ERR "\033[0;31mInvalid Arguments \n"
 #define CREAT_THRD_ERR "\033[0;31mError Creating threads! \n"
 #define JOIN_THRD_ERR "\033[0;31mError Joining Threads! \n"
+#define TIME_ERR "\033[0;31mTime Error! \n"
+#define DATA_ERR "\033[0;31mInvalid Data! \n"
 
 
 typedef struct s_data
 {
-	int					philo_count;
+	int					nums_of_philo;
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
-	int					max_eat;
+	int					max_meal;
 	int					is_dead;
 	int					is_all_eaten;
 	unsigned long int	ms_start;
@@ -44,10 +46,17 @@ typedef struct s_ph
 	pthread_t	th;
 	int			pos;
 	t_data		*data;	
-	int			nbr_eat;	
-	unsigned long	last_eat_t;
+	int			nbr_meal;
+	unsigned long	last_eat;
 
 }	t_ph;
 
+int				ft_atoi(const char *str);
+int				ft_error(char *msg);
+unsigned long	ft_time(void);
+void			ft_print(t_ph *ph, const char *msg);
+void			ft_sleep(t_ph *ph, long long time_to_eat);
+void			free_all(t_ph **ph);
+int				ft_thread(t_ph **ph);
 
 #endif
