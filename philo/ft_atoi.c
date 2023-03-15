@@ -51,3 +51,17 @@ int	ft_atoi(const char *str)
 	}
 	return ((sign * res));
 }
+
+int	invalid_args(void)
+{
+	printf("\033[0;33m ----------------------------------------------------- \n");
+	printf("|\033[0;33m---------------> Invalid arguments !? <--------------|\n");
+	printf("|\033[0;33m------> Please enter the arguments as follow : <-----|\n");
+	printf("|\033[0;33m------> First Argument : Number of philosophers <----|\n");
+	printf("|\033[0;33m------> Second Argument : Time to die <--------------|\n");
+	printf("|\033[0;33m------> Third Argument : Time to eat <---------------|\n");
+	printf("|\033[0;33m------> Fourth Argument : Time to sleep <------------|\n");
+	printf("|\033[0;33m------> Fifth Argument : Time to sleep <-------------|\n");
+	printf("\033[0;33m ----------------------------------------------------- \n");
+	return (1);
+}

@@ -6,7 +6,7 @@
 /*   By: mechane <mechane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 09:37:11 by mechane           #+#    #+#             */
-/*   Updated: 2023/03/14 12:06:52 by mechane          ###   ########.fr       */
+/*   Updated: 2023/03/15 12:35:45 by mechane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	ft_eat(t_ph *ph)
 	sem_post(data->forks);
 	sem_post(data->forks);
 }
-
 
 void	*ft_routine(void *args)
 {

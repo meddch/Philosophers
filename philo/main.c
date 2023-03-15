@@ -92,8 +92,8 @@ int	main(int ac, char **av)
 	t_ph	**ph;
 	t_data	*data;
 
-	if (ac < 5)
-		return (ft_error(ARGS_ERR));
+	if (ac < 5 || ac > 6)
+		return (invalid_args());
 	data = ft_init(ac, av);
 	if (!data)
 		return (0);

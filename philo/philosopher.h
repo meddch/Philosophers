@@ -6,7 +6,7 @@
 /*   By: mechane <mechane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 14:41:34 by mechane           #+#    #+#             */
-/*   Updated: 2023/03/10 14:44:51 by mechane          ###   ########.fr       */
+/*   Updated: 2023/03/14 08:26:43 by mechane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ void			ft_print(t_ph *ph, const char *msg);
 void			ft_sleep(unsigned long time_to_eat);
 void			free_all(t_ph **ph);
 int				ft_thread(t_ph **ph);
+int				invalid_args(void);
 
 #endif

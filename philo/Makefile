@@ -5,8 +5,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 NAME = philo
-FILE_M = philo_mandatory/ft_atoi philo_mandatory/main philo_mandatory/thread philo_mandatory/utils
-HEADER = philo_mandatory/philosopher.h
+FILE_M = ft_atoi main thread utils
+HEADER = philosopher.h
 
 SRCS_M = $(addsuffix .c, $(FILE_M))
 OBJS_M = $(addsuffix .o, $(FILE_M))

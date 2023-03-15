@@ -6,7 +6,7 @@
 /*   By: mechane <mechane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:11:53 by mechane           #+#    #+#             */
-/*   Updated: 2023/03/14 12:08:27 by mechane          ###   ########.fr       */
+/*   Updated: 2023/03/15 12:35:29 by mechane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	ft_processes(t_ph **ph)
 		}
 	}
 }
-
 
 static t_ph	**philo_init(t_data *data)
 {

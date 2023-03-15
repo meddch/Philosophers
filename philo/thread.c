@@ -77,9 +77,9 @@ static void	ft_eat(t_ph *ph)
 	pthread_mutex_unlock(&data->mtx_meal);
 	ft_sleep(data->time_to_eat);
 	ph->nbr_meal ++;
-	pthread_mutex_unlock(&data->forks[ph->pos]);
 	if (data->stop_flag)
 		return ;
+	pthread_mutex_unlock(&data->forks[ph->pos]);
 	pthread_mutex_unlock(&data->forks[(ph->pos + 1) % data->nums_of_philo]);
 }
 
