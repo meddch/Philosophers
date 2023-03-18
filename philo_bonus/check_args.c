@@ -6,7 +6,7 @@
 /*   By: mechane <mechane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 07:57:33 by mechane           #+#    #+#             */
-/*   Updated: 2023/03/15 12:35:18 by mechane          ###   ########.fr       */
+/*   Updated: 2023/03/18 13:48:48 by mechane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	invalid_args(void)
 
 int	check_data(int ac, t_data *data)
 {
-	if ((data->nums_of_philo < -1 || data->nums_of_philo > 200)
+	if ((data->nums_of_philo < 1 || data->nums_of_philo > 200)
 		|| (data->time_to_die < 0 || data->time_to_eat < 0)
 		|| (data->time_to_sleep < 0 || (data->max_meal < 1 && ac == 6)))
 		return (ft_error(DATA_ERR));
