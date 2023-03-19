@@ -119,7 +119,6 @@ int	ft_thread(t_ph **ph)
 	i = 0;
 	while (i < ph[0]->data->nums_of_philo)
 	{
-		ph[i]->last_eat = ft_time();
 		if (pthread_create(&ph[i]->th, NULL, &ft_routine, ph[i]) != 0)
 			ft_error(CREAT_THRD_ERR);
 		i++;
